@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Iris Analysis Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem }
+    .section { margin-bottom: 2rem }
+    .fig { max-width: 800px }
+    table { border-collapse: collapse; margin: 1em 0; }
+    th, td { border: 1px solid #ccc; padding: 0.5em; text-align: center; }
+    th { background: #f0f0f0; }
+    .summary { background: #e6f7ff; padding: 1em; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Iris dataset analysis</h1>
+  <h2>Objectives</h2>
+  <p>{{ objectives }}</p>
+
+  <h2>Results</h2>
+  <div class="summary">
+    <h3>Executive Summary</h3>
+    <p>
+      We trained a Random Forest classifier to predict the species of Iris flowers using four measured features. The model achieved an overall accuracy of <b>{{ accuracy | round(2) }}</b> on a held-out test set. Most misclassifications occurred between the versicolor and virginica species, while setosa was always correctly identified. The interactive 3D plot below shows clear separation between species in the feature space.
+    </p>
+  </div>
+  <p>Interactive 3D UMAP embedding comparing training (dots) and test (diamonds) colored by species. Predicted classes for test set are shown as crosses.</p>
+  <iframe src="../3d_umap.html" width="900" height="600"></iframe>
+
+  <h2>Exploratory Data Analysis</h2>
+  <img src="figs/pairwise.png" class="fig" alt="pairwise">
+
+  <h2>Accuracy & Metrics</h2>
+  <table>
+    <tr><th>Species</th><th>Precision</th><th>Recall</th><th>F1 Score</th><th>Test Samples</th></tr>
+    <tr><td>Setosa</td><td>{{ report['setosa']['precision'] | round(2) }}</td><td>{{ report['setosa']['recall'] | round(2) }}</td><td>{{ report['setosa']['f1-score'] | round(2) }}</td><td>{{ report['setosa']['support'] }}</td></tr>
+    <tr><td>Versicolor</td><td>{{ report['versicolor']['precision'] | round(2) }}</td><td>{{ report['versicolor']['recall'] | round(2) }}</td><td>{{ report['versicolor']['f1-score'] | round(2) }}</td><td>{{ report['versicolor']['support'] }}</td></tr>
+    <tr><td>Virginica</td><td>{{ report['virginica']['precision'] | round(2) }}</td><td>{{ report['virginica']['recall'] | round(2) }}</td><td>{{ report['virginica']['f1-score'] | round(2) }}</td><td>{{ report['virginica']['support'] }}</td></tr>
+    <tr><th>Macro Avg</th><td>{{ report['macro avg']['precision'] | round(2) }}</td><td>{{ report['macro avg']['recall'] | round(2) }}</td><td>{{ report['macro avg']['f1-score'] | round(2) }}</td><td>{{ report['macro avg']['support'] }}</td></tr>
+  </table>
+
+  <h2>Confusion Matrix</h2>
+  <table>
+    <tr><th></th><th>Setosa</th><th>Versicolor</th><th>Virginica</th></tr>
+    <tr><th>Setosa</th><td>{{ confusion_matrix[0][0] }}</td><td>{{ confusion_matrix[0][1] }}</td><td>{{ confusion_matrix[0][2] }}</td></tr>
+    <tr><th>Versicolor</th><td>{{ confusion_matrix[1][0] }}</td><td>{{ confusion_matrix[1][1] }}</td><td>{{ confusion_matrix[1][2] }}</td></tr>
+    <tr><th>Virginica</th><td>{{ confusion_matrix[2][0] }}</td><td>{{ confusion_matrix[2][1] }}</td><td>{{ confusion_matrix[2][2] }}</td></tr>
+  </table>
+
+</body>
+</html>
